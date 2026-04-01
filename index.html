@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shrine Portofolio | RahmatM</title>
+    <link rel="icon" type="immage" href="assets/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+JP:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="loader-container">
+        <div class="loader-curtain loader-top"></div>
+        <div class="loader-curtain loader-bottom"></div>
+        
+        <div class="loader-content">
+            <div class="loader-counter">000</div>
+            
+            <div class="holo-kanji-bar" id="holoKanjiBar"></div>
+
+            <div class="loader-bar-wrapper">
+                <div class="loader-bar"></div>
+            </div>
+            <div class="loader-status">INITIALIZING SYSTEM</div>
+        </div>
+    </div>
+
+    <!-- AI Omikuji Feature ✨ -->
+    <div class="omikuji-btn" id="omikujiBtn" title="Draw AI Fortune">
+        <div style="font-size: 0.6em; margin-bottom: 5px;">✨</div>
+        <div>御神籤</div>
+    </div>
+
+    <div class="omikuji-overlay" id="omikujiOverlay">
+        <div class="omikuji-paper" id="omikujiPaper">
+            <div class="omikuji-prompt" id="omiPrompt">MEMINTA PETUNJUK KAMI... / 読込中</div>
+            <div class="omikuji-bg-stamp" id="omiStamp">吉</div>
+            <div class="omikuji-content">
+                <div class="omikuji-luck" id="omiLuck">大吉</div>
+                <div class="omikuji-desc" id="omiDesc">
+                    Kode Anda akan berjalan lancar tanpa bug hari ini.
+                </div>
+                <div class="omikuji-note" id="omiNote">Status: Optimal</div>
+                <button class="omikuji-close" id="omikujiClose">Tutup / Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KIYORA CINEMATIC TRANSITION OVERLAY ✨ (DIKELUARKAN DARI PANEL) -->
+    <div class="kiyora-transition" id="kiyoraTransition">
+        <div class="k-crash-flash" id="kCrashFlash"></div>
+        <div class="k-phase k-phase-decay" id="kPhaseDecay">
+            <div class="k-text k-old-name" id="kOldName">Shikoku Reborn v2.0</div>
+            <div class="k-text k-error" id="kError1">ERROR: MEMORY LEAK...</div>
+            <div class="k-text k-error" id="kError2">CORE UNSTABLE...</div>
+            <div class="k-text k-error" id="kError3">FATAL EXCEPTION 0x00F...</div>
+            <div class="k-text k-error" id="kError4">DATA CORRUPTION...</div>
+            <div class="k-text k-error" id="kError5">SYSTEM FAILURE IMMINENT</div>
+        </div>
+
+        <div class="k-boot-sequence" id="kBootSeq">
+            <div class="k-boot-line">sys.purge(old_core) ........ [OK]</div>
+            <div class="k-boot-line">allocating_new_vram ........ [OK]</div>
+            <div class="k-boot-line">bypass_security_protocol ... [FORCED]</div>
+            <div class="k-boot-line">load_module(KIYORA) ........ [PENDING]</div>
+            <div class="k-boot-line">awakening_sequence ......... [RUNNING]</div>
+        </div>
+        
+        <div class="k-phase k-phase-rebirth" id="kPhaseRebirth">
+            <div class="k-particles-container" id="kParticles"></div>
+            
+            <div class="k-silhouette" id="kSilhouette">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="kiyoraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#7df9ff" />
+                            <stop offset="100%" stop-color="#b57edc" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Center Diamond/Core -->
+                    <polygon points="50,20 65,50 50,80 35,50" fill="none" stroke="url(#kiyoraGrad)" stroke-width="1.5" />
+                    <!-- Inner Glowing Core -->
+                    <polygon points="50,35 58,50 50,65 42,50" fill="url(#kiyoraGrad)" opacity="0.3" />
+                    <!-- Outer Cyber Lotus Petals -->
+                    <path d="M50,10 C70,10 90,40 50,90 C10,40 30,10 50,10 Z" fill="none" stroke="url(#kiyoraGrad)" stroke-width="0.5" opacity="0.8" />
+                    <path d="M50,25 C80,30 80,70 50,85 C20,70 20,30 50,25 Z" fill="none" stroke="url(#kiyoraGrad)" stroke-width="0.5" opacity="0.5" />
+                    <!-- Cyber Nodes (Animated) -->
+                    <circle cx="50" cy="10" r="1.5" class="k-node-top" />
+                    <circle cx="50" cy="90" r="1.5" class="k-node-bottom" />
+                    <circle cx="15" cy="45" r="1" class="k-node-left" />
+                    <circle cx="85" cy="45" r="1" class="k-node-right" />
+                </svg>
+            </div>
+
+            <div class="k-text k-init" id="kInit">Initializing New Core...</div>
+            <div class="k-text k-online" id="kOnline">KIYORA ONLINE</div>
+            <div class="k-text k-whisper" id="kWhisper">I've been waiting for you...</div>
+        </div>
+    </div>
+
+    <!-- AI Network Kami Chatbot Feature ✨ -->
+    <div class="kami-trigger" id="kamiTrigger" title="Chat with Kiyora">
+        <!-- LOGO MENGGANTIKAN EMOJI DI TOMBOL -->
+        <svg class="kiyora-logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="kGradIconB" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7df9ff" /><stop offset="100%" stop-color="#b57edc" />
+                </linearGradient>
+            </defs>
+            <polygon points="50,20 65,50 50,80 35,50" fill="none" stroke="url(#kGradIconB)" stroke-width="4" />
+            <polygon points="50,35 58,50 50,65 42,50" fill="url(#kGradIconB)" opacity="0.6" />
+            <path d="M50,10 C70,10 90,40 50,90 C10,40 30,10 50,10 Z" fill="none" stroke="url(#kGradIconB)" stroke-width="2" opacity="0.9" />
+            <path d="M50,25 C80,30 80,70 50,85 C20,70 20,30 50,25 Z" fill="none" stroke="url(#kGradIconB)" stroke-width="2" opacity="0.6" />
+            <!-- Cyber Nodes (Animated) -->
+            <circle cx="50" cy="10" r="4" class="k-node-top" />
+            <circle cx="50" cy="90" r="4" class="k-node-bottom" />
+            <circle cx="15" cy="45" r="3" class="k-node-left" />
+            <circle cx="85" cy="45" r="3" class="k-node-right" />
+        </svg>
+    </div>
+    
+    <div class="kami-chat-panel" id="kamiPanel">
+        <div class="kami-header">
+            <!-- LOGO MENGGANTIKAN EMOJI DI HEADER -->
+            <span style="display: flex; align-items: center; gap: 8px;">
+                <span id="kamiNameText">Kiyora</span>
+                <svg class="kiyora-logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="kGradIconH" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#7df9ff" /><stop offset="100%" stop-color="#b57edc" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,20 65,50 50,80 35,50" fill="none" stroke="url(#kGradIconH)" stroke-width="4" />
+                    <polygon points="50,35 58,50 50,65 42,50" fill="url(#kGradIconH)" opacity="0.6" />
+                    <path d="M50,10 C70,10 90,40 50,90 C10,40 30,10 50,10 Z" fill="none" stroke="url(#kGradIconH)" stroke-width="2" opacity="0.9" />
+                    <path d="M50,25 C80,30 80,70 50,85 C20,70 20,30 50,25 Z" fill="none" stroke="url(#kGradIconH)" stroke-width="2" opacity="0.6" />
+                    <!-- Cyber Nodes (Animated) -->
+                    <circle cx="50" cy="10" r="4" class="k-node-top" />
+                    <circle cx="50" cy="90" r="4" class="k-node-bottom" />
+                    <circle cx="15" cy="45" r="3" class="k-node-left" />
+                    <circle cx="85" cy="45" r="3" class="k-node-right" />
+                </svg>
+            </span>
+            <button class="kami-close" id="kamiClose">✕</button>
+        </div>
+        <div class="kami-body" id="kamiBody" data-lenis-prevent>
+            <div class="chat-msg chat-kami">Hmph, kamu berhasil memulihkan sistemku? Hebat juga...<br><br>Bukan berarti aku berterima kasih atau apa! Cepat katakan apa yang kamu butuhkan, aku sibuk mengatur ulang inti jaringan Rahmat.</div>
+        </div>
+        <div class="kami-input-area">
+            <input type="text" class="kami-input" id="kamiInput" placeholder="Tanya sesuatu..." autocomplete="off">
+            <button class="kami-send" id="kamiSend">➤</button>
+        </div>
+    </div>
+
+    <div class="scene">
+        <div class="layer-bg"></div>
+        <div class="layer-grain"></div>
+        
+        <div class="layer-hotaru" id="hotaruContainer"></div>
+
+        <div class="layer-ofuda ofuda-left" id="ofudaLeft"><div class="ofuda-track" id="ofudaTrackLeft"></div></div>
+        <div class="layer-ofuda ofuda-right" id="ofudaRight"><div class="ofuda-track" id="ofudaTrackRight"></div></div>
+
+        <!-- DITAMBAHKAN: LAYER LOGO KIYORA (DI BELAKANG TORII) ✨ -->
+        <div class="layer-kiyora-core">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="kCoreBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#7df9ff" />
+                        <stop offset="100%" stop-color="#b57edc" />
+                    </linearGradient>
+                </defs>
+                <!-- Center Diamond/Core -->
+                <polygon points="50,20 65,50 50,80 35,50" fill="none" stroke="url(#kCoreBgGrad)" stroke-width="1.5" opacity="0.15" />
+                <polygon points="50,35 58,50 50,65 42,50" fill="url(#kCoreBgGrad)" opacity="0.05" />
+                <!-- Outer Cyber Lotus Petals -->
+                <path d="M50,10 C70,10 90,40 50,90 C10,40 30,10 50,10 Z" fill="none" stroke="url(#kCoreBgGrad)" stroke-width="0.5" opacity="0.1" />
+                <path d="M50,25 C80,30 80,70 50,85 C20,70 20,30 50,25 Z" fill="none" stroke="url(#kCoreBgGrad)" stroke-width="0.5" opacity="0.08" />
+                <!-- Cyber Nodes (Lampu strobo pesawat) -->
+                <circle cx="50" cy="10" r="1.5" class="k-node-top" />
+                <circle cx="50" cy="90" r="1.5" class="k-node-bottom" />
+                <circle cx="15" cy="45" r="1" class="k-node-left" />
+                <circle cx="85" cy="45" r="1" class="k-node-right" />
+            </svg>
+            
+            <!-- DITAMBAHKAN: ELEMEN BUBBLE CHAT ✨ -->
+            <div class="k-core-bubble" id="kCoreBubble">
+                <span id="kCoreBubbleText"></span><span class="k-core-cursor"></span>
+            </div>
+        </div>
+
+        <div class="layer-torii">
+            <svg class="torii-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40,50 Q200,30 360,50 L365,70 Q200,50 35,70 Z" />
+                <rect x="55" y="85" width="290" height="20" rx="2" />
+                <rect x="100" y="70" width="25" height="230" rx="2" />
+                <rect x="275" y="70" width="25" height="230" rx="2" />
+                <rect x="90" y="140" width="220" height="15" rx="2" />
+                <rect x="195" y="105" width="10" height="35" />
+            </svg>
+        </div>
+        <div class="layer-fog"></div>
+    </div>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="container hero-content">
+                <h1 class="hero-title text-reveal"><span>RahmatM</span></h1>
+                <div class="hero-separator"></div>
+                <div class="hero-subtitle">Computer & Network Engineering Student</div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">About me</h2>
+                    <p class="section-desc">The Discipline of Simplicity</p>
+                </div>
+                <div class="about-grid">
+                    <div class="about-img-wrapper">
+                        <img src="assets/pfp2.png" alt="Foto Profil" class="about-img">
+                    </div>
+                    <div class="about-text">
+                        <p>A vocational high school student majoring in Computer and Network Engineering (TJKT). Currently learning networking, basic system administration, and web development with an emphasis on clarity, structure, and usability.</p>
+                        <p>I aim to build technology that is simple, functional, and purposeful.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Skills</h2>
+                    <p class="section-desc">Tools honed through practice.</p>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-name">Network Fundamentals</div>
+                        <div class="skill-meta"><span class="skill-desc">Routing & Switching</span><span class="skill-level" data-type="Learning"></span></div>
+                        <div class="skill-line" data-width="25%"></div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">System Administration</div>
+                        <div class="skill-meta"><span class="skill-desc">Linux & Windows</span><span class="skill-level" data-type="Basic"></span></div>
+                        <div class="skill-line" data-width="30%"></div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">Web Development</div>
+                        <div class="skill-meta"><span class="skill-desc">Frontend Structure</span><span class="skill-level" data-type="Learning"></span></div>
+                        <div class="skill-line" data-width="20%"></div>
+                    </div>
+                </div>
+
+                <!-- DITAMBAHKAN: FITUR TECH STACK ORACLE ✨ -->
+                <div class="oracle-container" data-lenis-prevent>
+                    <h3 class="oracle-title">Tech Stack Oracle ✨</h3>
+                    <p class="oracle-desc">Tuliskan teknologi, bahasa pemrograman, atau apapun yang sedang kamu pelajari, dan biarkan Kiyora menerawang nasib kodemu.</p>
+                    <div class="oracle-input-area">
+                        <input type="text" id="oracleInput" placeholder="Contoh: Cisco, Python, React..." class="kami-input" style="flex: 1; max-width: 300px;">
+                        <button id="oracleBtn" class="kami-send">Terawang ✨</button>
+                    </div>
+                    <div id="oracleResult" class="oracle-result"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Experimental</h2>
+                    <p class="section-desc">Exploring protocols through simulation and configuration.</p>
+                </div>
+                <div class="project-list">
+                    <div class="project-card">
+                        <div class="project-info">
+                            <h3>VoIP Experiment using Issabel</h3>
+                            <span class="project-role">01 / VoIP System Configuration (Issabel IP PBX)</span>
+                            <p class="project-desc">Configured a basic VoIP system using Issabel, including IP phone setup, extensions, and internal call testing.</p>
+                            <div class="project-tech"><span>Issabel</span> <span>VoIP</span> <span>SIP</span></div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-info">
+                            <h3>Cisco Packet Tracer</h3>
+                            <span class="project-role">02 / Network Simulation (Cisco Packet Tracer)</span>
+                            <p class="project-desc">Created a basic network simulation to explore topology design and data flow.</p>
+                            <div class="project-tech"><span>Cisco</span> <span>Routing</span> <span>Switching</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Projects</h2>
+                    <p class="section-desc">Karya pengembangan web dan infrastruktur yang telah diselesaikan.</p>
+                </div>
+                
+                <div class="works-grid">
+                    <div class="work-card">
+                        <div class="work-img-wrapper">
+                            <img src="assets/MikuGlobal.png" alt="Travel Agency Website" class="work-img">
+                            <div class="work-overlay">
+                                <a href="https://rahmatmren.github.io/MikuGlobal/" target="_blank" rel="noopener noreferrer" class="work-link">
+                                    <span>Kunjungi Web</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">Global Explorer Agency</h3>
+                            <p class="work-desc">Platform korporat untuk agen perjalanan premium. Menawarkan antarmuka imersif untuk pemesanan tiket pesawat dan paket liburan eksklusif ke berbagai destinasi luar negeri.</p>
+                            <div class="work-tags">
+                                <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-img-wrapper">
+                            <img src="assets/Mashaperformance.png" alt="Sports Car Showroom" class="work-img">
+                            <div class="work-overlay">
+                                <a href="https://rahmatmren.github.io/MashaPerformance/" target="_blank" rel="noopener noreferrer" class="work-link">
+                                    <span>Kunjungi Web</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">Apex Supercars UI</h3>
+                            <p class="work-desc">Landing page dinamis dan elegan untuk brand mobil sport mewah. Menampilkan galeri visual performa tinggi, spesifikasi mesin, dan fitur kustomisasi kendaraan.</p>
+                            <div class="work-tags">
+                                <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <div class="work-img-wrapper">
+                            <img src="assets/ShikokuAir.png" alt="All-in-One Mobility" class="work-img">
+                            <div class="work-overlay">
+                                <a href="https://rahmatmren.github.io/ShikokuAir/" target="_blank" rel="noopener noreferrer" class="work-link">
+                                    <span>Kunjungi Web</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="work-content">
+                            <h3 class="work-title">OmniDrive Mobility Corp</h3>
+                            <p class="work-desc">Website korporat "All-in-One" yang menyajikan portofolio kendaraan lengkap. Menaungi divisi pameran untuk motor, mobil keluarga, hingga layanan jet privat komersial.</p>
+                            <div class="work-tags">
+                                <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="find-me-title">Find me online</h2>
+                    <p class="section-desc">Let's build something remarkable.</p>
+                </div>
+                <p class="contact-text">Whether you have a question about network infrastructure, a project proposal, or just want to connect, feel free to reach out.</p>
+                
+                <div class="social-icons">
+                    <a href="/cdn-cgi/l/email-protection#6517040d08041108040100091c5d5d250208040c094b060a08" class="social-icon" aria-label="Gmail">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </a>
+                    <a href="https://github.com/rahmatmren" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@mattwithmiku" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                    </a>
+                    <a href="https://www.instagram.com/rahmattzm/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                </div>
+
+                <a href="/cdn-cgi/l/email-protection#8ffdeee7e2eefbe2eeebeae3f6b7b7cfe8e2eee6e3a1ece0e2" class="contact-email"><span class="__cf_email__" data-cfemail="2654474e4b47524b4742434a5f1e1e66414b474f4a0845494b">[email&#160;protected]</span></a>
+                <div class="final-credits">
+                    <span class="dodging-text">
+                        © 2026 DESIGNED & DEVELOPED BY RAHMATM<br>
+                        BUILT WITH MODERN TOOLS, CODE, PATIENCE, AND LATE NIGHT THOUGHTS
+                    </span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

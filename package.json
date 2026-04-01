@@ -1,0 +1,12 @@
+{
+  "name": "porto-kiyora",
+  "version": "1.0.0",
+  "description": "Portofolio dengan AI Kiyora terintegrasi Vercel",
+  "main": "api/kiyora.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "RahmatM",
+  "license": "ISC"
+}
